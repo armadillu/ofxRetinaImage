@@ -16,8 +16,45 @@ class ofxRetinaImage : public ofImage{
 
 	public:
 
+	float getWidth(){
+		return scale * width;
+	}
+
+	float getHeight(){
+		return scale * height;
+	}
+
+	float getTexWidth(){
+		return width;
+	}
+
+	float getTexHeight(){
+		return height;
+	}
+
+	float getScale(){
+		return scale;
+	}
+
+
+	void draw(float x, float y, float w, float h){
+		drawSubsection(x, y, 0,
+					   w, h,
+					   0,0,
+					   getWidth() / scale, getHeight() / scale);
+	}
+
+	void draw(float x, float y){
+		drawSubsection(x, y, 0,
+					   getWidth() / scale, getHeight() / scale,
+					   0,0,
+					   getWidth() / scale, getHeight() / scale);
+	}
+
 	bool loadImage(string fileName){
 
+		scale = 1.f;
+		isRetina = false;
 		if( ofxiPhoneGetOFWindow()->isRetinaSupportedOnDevice() ){
 
 			NSString *tmp = ofxStringToNSString(fileName);
@@ -39,6 +76,9 @@ class ofxRetinaImage : public ofImage{
 					ofLog(OF_LOG_ERROR, "ofxRetinaImage can't find retina version for image >> " + fileName + ". Will Try loading standard version.");
 					return ofImage::loadImage(fileName);
 				}else{
+					isRetina = true;
+					scale = 0.5;
+					cout << "ofxRetinaImage loaded >> " + ofxNSStringToString(fullPath) << endl ;
 					return true;
 				}
 			}else{
@@ -51,6 +91,10 @@ class ofxRetinaImage : public ofImage{
 		}
 	}
 
+	private:
+
+	bool isRetina;
+	float scale;
 };
 
 #endif
