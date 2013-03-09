@@ -78,7 +78,7 @@ class ofxRetinaImage : public ofImage{
 				}else{
 					isRetina = true;
 					scale = 0.5;
-					cout << "ofxRetinaImage loaded >> " + ofxNSStringToString(fullPath) << endl ;
+					//cout << "ofxRetinaImage loaded >> " + ofxNSStringToString(fullPath) << endl ;
 					return true;
 				}
 			}else{
